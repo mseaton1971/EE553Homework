@@ -12,6 +12,8 @@ class GrowArray
    public:
 
    GrowArray(int amount);
+   GrowArray(const GrowArray& arrayobj);
+   GrowArray& operator=(GrowArray& right);
    ~GrowArray();
    void ExpandArray();
    void SetArray(int start);
@@ -21,8 +23,8 @@ class GrowArray
    void pop();		//Removes an element from the end of the array
    void Display();
    
-
 };
+
 
 GrowArray::GrowArray(int amount)
 {
@@ -33,6 +35,34 @@ GrowArray::GrowArray(int amount)
    for(int i = 0; i < size; i++)
      array[i] = 0;
 }
+
+
+GrowArray::GrowArray(const GrowArray& arrayobj)
+{
+   array = new int[capacity];
+  
+   for(int i = 0; i < size; i++)
+     array[i] = arrayobj.array[i];
+}
+
+
+GrowArray& GrowArray::operator=(GrowArray& right)
+{
+   if(right.capacity != capacity)
+   {
+      delete[] array;
+      array = new int[right.capacity];
+   }
+
+   capacity = right.capacity;
+   size     = right.size;
+
+   for(int i = 0; i < size; i++)
+      array[i] = right.array[i];
+
+   return *this;  
+}
+
 
 void GrowArray::ExpandArray()
 {
@@ -51,6 +81,7 @@ void GrowArray::ExpandArray()
    SetArray(size);
 }
 
+
 void GrowArray::AddElement(int element)
 {
    if(size >= capacity)
@@ -58,6 +89,8 @@ void GrowArray::AddElement(int element)
    
    array[size++] = element;
 }
+
+
 int GrowArray::getElementAt(int index)
 {
    if(index < 0 || index >= size)
@@ -73,6 +106,7 @@ int GrowArray::getElementAt(int index)
    }
 }
 
+
 void GrowArray::RemoveElementAt(int index)
 {
    if(index < 0 || index >= size)
@@ -86,11 +120,13 @@ void GrowArray::RemoveElementAt(int index)
 
 }
 
+
 void GrowArray::SetArray(int start)
 {
    for(int i = start; i < capacity; i++)
       array[i] = 0;
 }
+
 
 void GrowArray::Display()
 {
@@ -98,6 +134,8 @@ void GrowArray::Display()
       cout<<array[i]<< " ";
    cout<<endl;
 }
+
+
 void GrowArray::pop()
 {
    if(size == 0)
@@ -109,11 +147,11 @@ void GrowArray::pop()
    cout<<"Remove the last element"<<endl;
 }
 
+
 GrowArray::~GrowArray()
 {
    cout<<"Freeing all of the memory\n";
    delete[] array;
-
 }
 
 
